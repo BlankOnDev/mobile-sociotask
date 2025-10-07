@@ -1,0 +1,66 @@
+name: Android CI
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  main_project_module: app       # ganti kalau modul app kamu beda (mis :app)
+  java_version: '21'             # konsisten dengan proyekmu
+
+jobs:
+  build-and-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Validasi Gradle wrapper (aman dari jar palsu)
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ env.java_version }}
+
+      # Gradle setup + cache (lebih pintar dari cache manual)
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      # Lint Android (debug) semua modul Android
+      - name: Android Lint (debug)
+        run: ./gradlew lintDebug --stacktrace -Dorg.gradle.caching=true -Dorg.gradle.configuration-cache=true
+
+      # Detekt (kamu sudah pakai)
+      - name: Detekt
+        run: ./gradlew detekt --stacktrace
+
+      # Unit test (opsional; aktifkan kalau sudah ada)
+      # - name: Unit Test (debug)
+      #   run: ./gradlew testDebugUnitTest --stacktrace
+
+      # Build APK debug (semua app module; atau spesifik)
+      - name: Assemble Debug
+        run: ./gradlew assembleDebug --stacktrace -Dorg.gradle.caching=true -Dorg.gradle.configuration-cache=true
+
+      # Upload artefak APK/AAB debug
+      - name: Upload APKs
+        uses: actions/upload-artifact@v4
+        with:
+          name: apks-debug
+          path: |
+            **/build/outputs/apk/**/debug/*.apk
+            **/build/outputs/bundle/**/debug/*.aab
+          if-no-files-found: ignore

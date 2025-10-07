@@ -1,0 +1,57 @@
+#name: Android Release (by tag)
+#
+#on:
+#  push:
+#    tags: [ 'v*' ]   # contoh: v0.1.0, v1.0.0-rc1
+#
+#permissions:
+#  contents: write     # diperlukan jika kamu membuat GitHub Release (opsional step di bawah)
+#
+#env:
+#  main_project_module: app
+#  java_version: '21'
+#
+#jobs:
+#  build-release:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#
+#      - name: Validate Gradle Wrapper
+#        uses: gradle/wrapper-validation-action@v2
+#
+#      - name: Set up JDK
+#        uses: actions/setup-java@v4
+#        with:
+#          distribution: temurin
+#          java-version: ${{ env.java_version }}
+#          cache: gradle
+#
+#      - name: Make gradlew executable
+#        run: chmod +x ./gradlew
+#
+#      # Build AAB release untuk modul utama (unsigned — aman untuk repo publik)
+#      - name: Build App Bundle (AAB) Release
+#        run: ./gradlew ${{ env.main_project_module }}:bundleRelease --stacktrace
+#
+#      # (Opsional) Build APK release
+#      # - name: Build APK Release
+#      #   run: ./gradlew ${{ env.main_project_module }}:assembleRelease --stacktrace
+#
+#      - name: Upload AAB Artifact
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: aab-${{ github.ref_name }}   # contoh: aab-v0.1.0
+#          path: ${{ env.main_project_module }}/build/outputs/bundle/release/*.aab
+#          if-no-files-found: error
+#      #
+#      #       (Opsional) Buat GitHub Release otomatis dengan melampirkan AAB/APK
+#      #       Aktifkan jika kamu ingin rilis GitHub langsung dari tag
+#      - name: Create GitHub Release
+#        uses: softprops/action-gh-release@v2
+#        with:
+#          files: |
+#            ${{ env.main_project_module }}/build/outputs/bundle/release/*.aab
+#            ${{ env.main_project_module }}/build/outputs/apk/release/*.apk
+#          generate_release_notes: true
