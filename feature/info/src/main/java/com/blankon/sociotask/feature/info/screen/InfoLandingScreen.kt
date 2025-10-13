@@ -11,27 +11,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.blankon.sociotask.feature.info.viewmodel.InfoViewModel
-import com.blankon.sosiotask.core.ui.base.BaseScreen
 
 @Composable
 internal fun InfoLandingScreen(
     viewModel: InfoViewModel = hiltViewModel()
 ) {
-    BaseScreen(
-        showDefaultTopBar = false,
-        clipToTopBar = false
-    ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 24.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "Thanks for using my template!",
-                textAlign = TextAlign.Center,
-            )
-        }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 24.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = "Thanks for using my template!",
+            textAlign = TextAlign.Center,
+        )
     }
+
 }

@@ -14,13 +14,9 @@ class SignInWithEmailUseCase @Inject constructor(
         email: String,
         password: String
     ): Result<User, SignInError> {
-        if (email.isBlank()) {
-            return Result.Error(SignInError.Validation.EmailBlank)
-        }
-        if (password.isBlank()) {
-            return Result.Error(SignInError.Validation.PasswordBlank)
-        }
-        return when (val res = repository.signIn(SignInParams(email, password))) {
+        if (email.isBlank()) return Result.Error(SignInError.Validation.EmailBlank)
+        if (password.isBlank()) return Result.Error(SignInError.Validation.PasswordBlank)
+        return when (val res = repository.signInWithEmail(SignInParams(email, password))) {
             is Result.Success -> Result.Success(res.data)
             is Result.Error -> Result.Error(SignInError.Data(res.error))
         }

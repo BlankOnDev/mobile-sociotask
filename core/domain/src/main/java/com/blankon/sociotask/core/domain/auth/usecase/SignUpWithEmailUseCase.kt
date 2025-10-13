@@ -1,14 +1,26 @@
 package com.blankon.sociotask.core.domain.auth.usecase
 
+import com.blankon.sociotask.core.domain.Result
+import com.blankon.sociotask.core.domain.auth.error.SignUpError
 import com.blankon.sociotask.core.domain.auth.model.SignUpParams
 import com.blankon.sociotask.core.domain.auth.model.User
 import com.blankon.sociotask.core.domain.auth.repository.AuthRepository
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class SignUpWithEmailUseCase @Inject constructor(
     private val repository: AuthRepository
 ) {
-    suspend operator fun invoke(signUpParams: SignUpParams): Flow<Result<User>> =
-        repository.signUpWithEmail(signUpParams)
+    suspend operator fun invoke(
+        params: SignUpParams
+    ): Result<User, SignUpError> {
+        if (params.username.isBlank()) return Result.Error(SignUpError.Validation.UsernameBlank)
+        if (params.fullName.isBlank()) return Result.Error(SignUpError.Validation.FullNameBlank)
+        if (params.email.isBlank()) return Result.Error(SignUpError.Validation.EmailBlank)
+        if (params.password.isBlank()) return Result.Error(SignUpError.Validation.PasswordBlank)
+        return when (val res = repository.signUpWithEmail(params)) {
+            is Result.Success -> Result.Success(res.data)
+            is Result.Error -> Result.Error(SignUpError.Data(res.error))
+
+        }
+    }
 }

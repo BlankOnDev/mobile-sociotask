@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="err_no_internet">Tidak ada koneksi internet</string>
+    <string name="err_timeout">Permintaan berakhir (timeout)</string>
+    <string name="err_rate_limited">Terlalu banyak permintaan. Coba lagi nanti.</string>
+    <string name="err_unreachable">Server tidak dapat dijangkau</string>
+    <string name="err_unauthorized">Tidak terotorisasi</string>
+    <string name="err_forbidden">Akses ditolak</string>
+    <string name="err_not_found">Sumber daya tidak ditemukan</string>
+    <string name="err_server">Terjadi kesalahan pada server</string>
+    <string name="err_unknown_with_code">Terjadi kesalahan (kode %1$d)</string>
+    <string name="err_unknown">Terjadi kesalahan yang tidak diketahui</string>
+    <string name="err_auth_email_not_verified">Email belum aktif, silakan cek email Anda</string>
+    <string name="err_auth_invalid_credential">Email atau kata sandi salah</string>
+    <string name="err_auth_unauthorized">Tidak terautorisasi</string>
+
+    <!-- Sign in validation -->
+    <string name="err_email_blank">Email tidak boleh kosong</string>
+    <string name="err_password_blank">Kata sandi tidak boleh kosong</string>
+
+
+    <!-- Sign up validation -->
+    <string name="err_full_name_blank">Full name tidak boleh kosong</string>
+    <string name="err_username_blank">Username tidak boleh kosong</string>
+    <string name="err_confirm_password_blank">Confirm password tidak boleh kosong</string>
+
+    <!-- (opsional) pesan sukses -->
+    <string name="login_success">Berhasil masuk</string>
+</resources>

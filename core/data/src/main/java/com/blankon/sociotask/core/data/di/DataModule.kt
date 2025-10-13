@@ -38,7 +38,7 @@ class DataModule {
         okHttpClient: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory
     ): Retrofit = Retrofit.Builder()
-        .baseUrl("https://api.sampleapis.com/") //Ganti dengan baseUrl
+        .baseUrl("https://api.sampleapis.com/")
         .addConverterFactory(gsonConverterFactory)
         .client(okHttpClient)
         .build()
@@ -62,7 +62,7 @@ class DataModule {
         @ApplicationContext context: Context
     ) = ChuckerInterceptor.Builder(context).collector(ChuckerCollector(context)).build()
 
-    @Provides
+    @Provides @Singleton
     fun provideDataStore(@ApplicationContext context: Context) = AppDataStore(context)
 
 }

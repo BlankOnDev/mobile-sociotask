@@ -19,6 +19,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import com.blankon.sosiotask.core.ui.UiText
 
 @Composable
 fun InputField(
@@ -80,9 +81,9 @@ fun EmailField(
     label: String? = "Email",
     placeholder: String? = "Enter Your Email",
     isError: Boolean = false,
-    errorText: String? = null,
+    errorText: UiText? = null,
     helperText: String? = null,
-    ) {
+) {
     InputField(
         value = value,
         onValueChange = onValueChange,
@@ -93,7 +94,7 @@ fun EmailField(
             keyboardType = KeyboardType.Email,
             imeAction = ImeAction.Next
         ),
-        errorText = errorText,
+        errorText = errorText?.asString(),
         helperText = helperText,
         isError = isError
     )
@@ -172,7 +173,7 @@ fun PasswordField(
     label: String = "Password",
     placeholder: String = "Masukkan password",
     isError: Boolean = false,
-    errorText: String? = null,
+    errorText: UiText? = null,
     helperText: String? = null,
     imeAction: ImeAction = ImeAction.Done,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
@@ -188,7 +189,7 @@ fun PasswordField(
         label = label,
         placeholder = placeholder,
         isError = isError,
-        errorText = errorText,
+        errorText = errorText?.asString(),
         helperText = helperText,
         trailingIcon = {
             IconButton(

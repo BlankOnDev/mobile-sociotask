@@ -16,7 +16,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.blankon.sociotask.auth.viewmodel.SignUpEvent
 import com.blankon.sociotask.auth.viewmodel.SignUpIntent
 import com.blankon.sociotask.auth.viewmodel.SignUpUiState
 import com.blankon.sociotask.auth.viewmodel.SignUpViewModel
@@ -45,8 +44,9 @@ fun SignUpScreen(
         state = state,
         onEmailChange = { viewModel.onIntent(SignUpIntent.EmailChanged(it)) },
         onPasswordChange = { viewModel.onIntent(SignUpIntent.PasswordChanged(it)) },
-
-
+        onSubmit = { viewModel.onIntent(SignUpIntent.Submit) },
+        onTogglePassword = { viewModel.onIntent(SignUpIntent.TogglePassword) },
+        modifier = modifier
     )
 }
 

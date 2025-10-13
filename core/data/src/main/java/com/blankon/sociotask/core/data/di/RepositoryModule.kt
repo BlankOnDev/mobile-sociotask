@@ -19,14 +19,16 @@ abstract class RepositoryModule {
         impl: AuthRepositoryImpl
     ): AuthRepository
 
-//
+
+    @Binds
+    @Singleton
+    abstract fun bindAuthRemoteDataSource(
+        impl: FakeAuthDataSource
+    ): AuthDataRemoteSource
+
+
 //    @Binds
 //    @Singleton
-//    fun provideRepository(apiService: ApiService): AppRepository =
-//        AppRepositoryImpl(apiService)
-
-    @Binds @Singleton
-    abstract fun bindAuthRemoteDataSource(
-        impl : FakeAuthDataSource
-    ): AuthDataRemoteSource
+//    abstract fun bindGoogleAuthDataSource(
+//    ): GoogleAuthDataSource
 }

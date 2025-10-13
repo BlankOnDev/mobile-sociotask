@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_success">Berhasil Login</string>
+    <string name="signup_success">Silahkan cek akun anda untuk melakukan verifikasi</string>
+    <string name="email_blank">Email tidak boleh kosong</string>
+    <string name="password_blank">Password tidak boleh kosong</string>
+    <string name="repassword_blank">Re Password tidak boleh kosong</string>
+    <string name="username_blank">Username tidak boleh kosong</string>
+    <string name="fullname_blank">Fullname tidak boleh kosong</string>
+
+</resources>

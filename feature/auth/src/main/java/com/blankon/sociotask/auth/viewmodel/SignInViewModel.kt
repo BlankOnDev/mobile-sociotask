@@ -3,10 +3,12 @@ package com.blankon.sociotask.auth.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.blankon.sociotask.core.domain.Result
-import com.blankon.sociotask.core.domain.auth.error.DataError
 import com.blankon.sociotask.core.domain.auth.error.SignInError
 import com.blankon.sociotask.core.domain.auth.model.User
 import com.blankon.sociotask.core.domain.auth.usecase.SignInWithEmailUseCase
+import com.blankon.sociotask.feature.auth.R
+import com.blankon.sosiotask.core.ui.UiText
+import com.blankon.sosiotask.core.ui.toUiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,8 +24,8 @@ data class SignInUiState(
     val password: String = "",
     val showPassword: Boolean = false,
     val isLoading: Boolean = false,
-    val emailError: String? = null,
-    val passwordError: String? = null
+    val emailError: UiText? = null,
+    val passwordError: UiText? = null
 ) {
     val isFormValid: Boolean get() = email.isNotBlank() && password.isNotBlank()
 }
@@ -36,7 +38,7 @@ sealed interface SignInIntent {
 }
 
 sealed interface SignInEvent {
-    data class ShowMessage(val message: String) : SignInEvent
+    data class ShowMessage(val message: UiText) : SignInEvent
     data class NavigateHome(val userId: String) : SignInEvent
 }
 
@@ -44,67 +46,61 @@ sealed interface SignInEvent {
 class SignInViewModel @Inject constructor(
     private val signInWithEmailUseCase: SignInWithEmailUseCase
 ) : ViewModel() {
-    private val _state = MutableStateFlow(SignInUiState())
-    val state: StateFlow<SignInUiState> = _state.asStateFlow()
+    private val _uiState = MutableStateFlow(SignInUiState())
+    val uiState: StateFlow<SignInUiState> = _uiState.asStateFlow()
 
     private val _events = Channel<SignInEvent>(Channel.BUFFERED)
     val events = _events.receiveAsFlow()
 
-
     fun onIntent(intent: SignInIntent) {
         when (intent) {
-            is SignInIntent.EmailChanged -> _state.update {
-                it.copy(
-                    email = intent.email,
-                    emailError = null
-                )
+            is SignInIntent.EmailChanged -> _uiState.update {
+                it.copy(email = intent.email, emailError = null)
             }
 
-            is SignInIntent.PasswordChanged -> _state.update {
-                it.copy(
-                    password = intent.password,
-                    passwordError = null
-                )
+            is SignInIntent.PasswordChanged -> _uiState.update {
+                it.copy(password = intent.password, passwordError = null)
             }
 
-            SignInIntent.TogglePassword -> _state.update { it.copy(showPassword = !it.showPassword) }
-            SignInIntent.Submit -> submit()
+            is SignInIntent.TogglePassword -> _uiState.update { it.copy(showPassword = !it.showPassword) }
+            is SignInIntent.Submit -> submit()
         }
     }
 
     private fun submit() {
-        val s = _state.value
+        val s = _uiState.value
         if (s.isLoading) return
 
         viewModelScope.launch {
-            _state.update { it.copy(isLoading = true, emailError = null, passwordError = null) }
+            _uiState.update { it.copy(isLoading = true, emailError = null, passwordError = null) }
 
-            when (val res: Result<User, SignInError> = signInWithEmailUseCase(s.email, s.password)) {
+            when (val res: Result<User, SignInError> =
+                signInWithEmailUseCase(s.email, s.password)) {
                 is Result.Success -> {
-                    _events.send(SignInEvent.ShowMessage("Login berhasil"))
+                    _uiState.update { it.copy(isLoading = false) }
+                    _events.send(SignInEvent.ShowMessage(UiText.StringResource(R.string.login_success)))
                     _events.send(SignInEvent.NavigateHome(res.data.id))
                 }
 
                 is Result.Error -> handleError(res.error)
             }
 
-            _state.update { it.copy(isLoading = false) }
+            _uiState.update { it.copy(isLoading = false) }
         }
     }
 
     private suspend fun handleError(e: SignInError) {
         when (e) {
-            is SignInError.Validation.EmailBlank -> _state.update { it.copy(emailError = "Email tidak boleh kosong") }
-            is SignInError.Validation.PasswordBlank -> _state.update { it.copy(passwordError = "Password tidak boleh kosong") }
-            is SignInError.Data -> _events.send(SignInEvent.ShowMessage(networkErrorMessage(e.cause)))
-        }
-    }
+            is SignInError.Validation.EmailBlank -> _uiState.update {
+                it.copy(emailError = e.toUiText())
+            }
 
-    private fun networkErrorMessage(err: DataError.Network): String = when (err) {
-        DataError.Network.NO_INTERNET -> "Tidak ada koneksi internet"
-        DataError.Network.REQUEST_TIMEOUT -> "Permintaan timeout"
-        DataError.Network.TOO_MANY_REQUEST -> "Terlalu banyak permintaan"
-        DataError.Network.SERVER_ERROR -> "Terjadi kesalahan server"
-        DataError.Network.UNKNOWN -> "Kesalahan tidak diketahui"
+            is SignInError.Validation.PasswordBlank -> _uiState.update {
+                it.copy(passwordError = e.toUiText())
+            }
+
+            is SignInError.Data ->
+                _events.send(SignInEvent.ShowMessage(e.cause.toUiText()))
+        }
     }
 }
