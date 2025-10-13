@@ -83,6 +83,7 @@ fun EmailField(
     isError: Boolean = false,
     errorText: UiText? = null,
     helperText: String? = null,
+    enabled: Boolean = true,
 ) {
     InputField(
         value = value,
@@ -96,7 +97,8 @@ fun EmailField(
         ),
         errorText = errorText?.asString(),
         helperText = helperText,
-        isError = isError
+        isError = isError,
+        enabled = enabled
     )
 }
 
@@ -112,6 +114,7 @@ fun UsernameField(
     helperText: String? = null,
     imeAction: ImeAction = ImeAction.Next,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    enabled: Boolean = true,
 ) {
     InputField(
         value = value,
@@ -127,7 +130,8 @@ fun UsernameField(
             imeAction = imeAction
         ),
         keyboardActions = keyboardActions,
-        singleLine = true
+        singleLine = true,
+        enabled = enabled
     )
 }
 
@@ -142,6 +146,7 @@ fun FullnameField(
     errorText: String? = null,
     helperText: String? = null,
     imeAction: ImeAction = ImeAction.Next,
+    enabled: Boolean = true,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
 ) {
     InputField(
@@ -158,7 +163,8 @@ fun FullnameField(
             imeAction = imeAction
         ),
         keyboardActions = keyboardActions,
-        singleLine = true
+        singleLine = true,
+        enabled = enabled
     )
 }
 
@@ -177,6 +183,7 @@ fun PasswordField(
     helperText: String? = null,
     imeAction: ImeAction = ImeAction.Done,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    enabled: Boolean = true
 ) {
     val visual = if (showPassword) VisualTransformation.None else PasswordVisualTransformation()
 
@@ -191,6 +198,7 @@ fun PasswordField(
         isError = isError,
         errorText = errorText?.asString(),
         helperText = helperText,
+        enabled = enabled,
         trailingIcon = {
             IconButton(
                 modifier = Modifier.semantics { contentDescription = toggleDesc },

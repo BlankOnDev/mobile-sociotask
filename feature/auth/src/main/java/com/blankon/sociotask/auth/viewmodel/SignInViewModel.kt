@@ -73,19 +73,19 @@ class SignInViewModel @Inject constructor(
 
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, emailError = null, passwordError = null) }
+            try {
+                when (val res: Result<User, SignInError> =
+                    signInWithEmailUseCase(s.email, s.password)) {
+                    is Result.Success -> {
+                        _events.send(SignInEvent.ShowMessage(UiText.StringResource(R.string.login_success)))
+                        _events.send(SignInEvent.NavigateHome(res.data.id))
+                    }
 
-            when (val res: Result<User, SignInError> =
-                signInWithEmailUseCase(s.email, s.password)) {
-                is Result.Success -> {
-                    _uiState.update { it.copy(isLoading = false) }
-                    _events.send(SignInEvent.ShowMessage(UiText.StringResource(R.string.login_success)))
-                    _events.send(SignInEvent.NavigateHome(res.data.id))
+                    is Result.Error -> handleError(res.error)
                 }
-
-                is Result.Error -> handleError(res.error)
+            } finally {
+                _uiState.update { it.copy(isLoading = false) }
             }
-
-            _uiState.update { it.copy(isLoading = false) }
         }
     }
 
