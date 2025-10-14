@@ -36,6 +36,9 @@ import com.blankon.sociotask.core.designsystem.component.HorizontalTextDivider
 import com.blankon.sociotask.core.designsystem.component.PasswordField
 import com.blankon.sociotask.core.designsystem.component.SocialButtonsRow
 import com.blankon.sociotask.core.designsystem.theme.SociotaskTheme
+import com.blankon.sosiotask.core.ui.ObserveAsEvents
+import com.blankon.sosiotask.core.ui.SnackbarController
+import com.blankon.sosiotask.core.ui.SnackbarEvent
 
 @Composable
 fun SignInScreen(
@@ -54,6 +57,19 @@ fun SignInScreen(
                     message = e.message.asString(ctx)
                 )
             }
+        }
+    }
+
+    ObserveAsEvents(viewModel.events) { event ->
+        when (event) {
+            is SignInEvent.ShowMessage -> {
+                val msg = event.message.asString(ctx)
+                SnackbarController.emit(
+                    SnackbarEvent(message = msg)
+                )
+            }
+
+            is SignInEvent.NavigateHome -> onNavigateHome(event.userId)
         }
     }
 

@@ -5,9 +5,10 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -38,7 +39,10 @@ import com.blankon.sociotask.navigation.attr.AppNavHostAttr
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun AppNavHost(navGraphs: Set<@JvmSuppressWildcards BaseNavGraph>) {
+internal fun AppNavHost(
+    navGraphs: Set<@JvmSuppressWildcards BaseNavGraph>,
+    contentPadding: PaddingValues
+) {
     val navController = rememberNavController()
     val navBackStackEntry = navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry.value?.destination
@@ -54,7 +58,7 @@ internal fun AppNavHost(navGraphs: Set<@JvmSuppressWildcards BaseNavGraph>) {
             modifier = Modifier
                 .background(colorScheme.background)
                 .fillMaxSize()
-                .systemBarsPadding(),
+                .padding(contentPadding),
             navController = navController,
             startDestination = SignInRoute::class
         ) {
