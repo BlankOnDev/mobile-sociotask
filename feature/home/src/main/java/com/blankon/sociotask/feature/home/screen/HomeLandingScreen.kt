@@ -10,10 +10,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.blankon.sociotask.core.designsystem.theme.SociotaskTheme
@@ -22,9 +25,14 @@ import com.blankon.sociotask.core.navigation.route.HomeGraph.HomeDataClassRoute
 import com.blankon.sociotask.core.navigation.route.HomeGraph.HomeDataClassRoute.CustomData
 import com.blankon.sociotask.core.navigation.route.HomeGraph.HomeDataTypeRoute
 import com.blankon.sociotask.core.navigation.route.HomeGraph.HomeFetchApiRoute
+import com.blankon.sociotask.feature.home.viewmodel.HomeLandingViewModel
 
 @Composable
-internal fun HomeLandingScreen(navController: NavController) {
+internal fun HomeLandingScreen(
+    navController: NavController,
+    homeViewModel: HomeLandingViewModel = hiltViewModel()
+) {
+    val token by homeViewModel.token.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier
@@ -33,6 +41,8 @@ internal fun HomeLandingScreen(navController: NavController) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        Text("$token")
         Button(
             onClick = {
                 navController.navigateTo(
@@ -60,8 +70,10 @@ internal fun HomeLandingScreen(navController: NavController) {
         Spacer(modifier = Modifier.size(24.dp))
 
         Button(
-            onClick = { navController.navigateTo(HomeFetchApiRoute) }
-        ) { Text(text = "Fetch API") }
+            onClick = {
+                navController.navigateTo(HomeFetchApiRoute)
+            }
+        ) { Text(text = "Logout") }
     }
 
 }

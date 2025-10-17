@@ -47,6 +47,7 @@ fun SignInScreen(
     viewModel: SignInViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val token by viewModel.token.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
     val ctx = LocalContext.current
     LaunchedEffect(Unit) {
@@ -75,14 +76,27 @@ fun SignInScreen(
 
     Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { paddingValues ->
-        LoginContent(
-            state = state,
-            onEmailChange = { viewModel.onIntent(SignInIntent.EmailChanged(it)) },
-            onPasswordChange = { viewModel.onIntent(SignInIntent.PasswordChanged(it)) },
-            onTogglePassword = { viewModel.onIntent(SignInIntent.TogglePassword) },
-            onSubmit = { viewModel.onIntent(SignInIntent.Submit) },
-            modifier = modifier.padding(paddingValues)
-        )
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(paddingValues),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            val displayToken = remember(token) {
+                token?.let { it }
+                    ?: "(token null)"
+            }
+
+            Text("Token = $displayToken")
+            LoginContent(
+                state = state,
+                onEmailChange = { viewModel.onIntent(SignInIntent.EmailChanged(it)) },
+                onPasswordChange = { viewModel.onIntent(SignInIntent.PasswordChanged(it)) },
+                onTogglePassword = { viewModel.onIntent(SignInIntent.TogglePassword) },
+                onSubmit = { viewModel.onIntent(SignInIntent.Submit) },
+                modifier = modifier.padding(paddingValues)
+            )
+        }
     }
 }
 
@@ -104,6 +118,8 @@ fun LoginContent(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+
         Text("LOGIN")
         Spacer(Modifier.height(24.dp))
         EmailField(
