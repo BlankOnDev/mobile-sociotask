@@ -9,8 +9,10 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import com.blankon.sociotask.core.data.utils.NetworkMonitor
 import com.blankon.sociotask.core.designsystem.theme.SociotaskTheme
 import com.blankon.sociotask.core.navigation.base.BaseNavGraph
 import com.blankon.sociotask.navigation.AppNavHost
@@ -26,6 +28,9 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
     @Inject
     lateinit var navGraphs: Set<@JvmSuppressWildcards BaseNavGraph>
+
+    @Inject
+    lateinit var networkMonitor: NetworkMonitor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +55,19 @@ class MainActivity : ComponentActivity() {
                         )
                         if (result == SnackbarResult.ActionPerformed) {
                             event.action?.action?.invoke()
+                        }
+                    }
+                }
+
+                LaunchedEffect(Unit) {
+                    networkMonitor.isOnline.collect { connected ->
+                        if (connected) {
+                            snackbarHostState.currentSnackbarData?.dismiss()
+                        } else {
+                            snackbarHostState.showSnackbar(
+                                message = "Tidak ada koneksi internet",
+                                actionLabel = "Retry"
+                            )
                         }
                     }
                 }

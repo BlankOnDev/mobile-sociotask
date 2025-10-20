@@ -4,6 +4,7 @@ import com.blankon.sociotask.core.data.model.request.SignInRequest
 import com.blankon.sociotask.core.data.source.remote.ApiService
 import com.blankon.sociotask.core.domain.Result
 import com.blankon.sociotask.core.domain.auth.error.DataError
+import com.blankon.sociotask.core.domain.auth.model.RegisteredAccount
 import com.blankon.sociotask.core.domain.auth.model.SignInParams
 import com.blankon.sociotask.core.domain.auth.model.SignUpParams
 import com.blankon.sociotask.core.domain.auth.model.User
@@ -34,7 +35,7 @@ class AuthRemoteDataSourceImpl @Inject constructor(
                 Result.Error(DataError.Network.Auth.InvalidCredentials)
             }
         } catch (e: HttpException) {
-            Result.Error(DataError.Network.Server_Error)
+            Result.Error(DataError.Network.ServerError)
         } catch (e: IOException) {
             Result.Error(DataError.Network.NoInternet)
         } catch (e: Exception) {
@@ -42,7 +43,7 @@ class AuthRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun signUpWithEmail(signUpParams: SignUpParams): Result<User, DataError> {
+    override suspend fun signUpWithEmail(signUpParams: SignUpParams): Result<RegisteredAccount, DataError> {
         TODO("Not yet implemented")
     }
 }

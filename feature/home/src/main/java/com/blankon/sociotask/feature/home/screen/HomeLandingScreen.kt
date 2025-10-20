@@ -10,13 +10,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.blankon.sociotask.core.designsystem.theme.SociotaskTheme
@@ -32,8 +30,6 @@ internal fun HomeLandingScreen(
     navController: NavController,
     homeViewModel: HomeLandingViewModel = hiltViewModel()
 ) {
-    val token by homeViewModel.token.collectAsStateWithLifecycle()
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -42,40 +38,8 @@ internal fun HomeLandingScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Text("$token")
-        Button(
-            onClick = {
-                navController.navigateTo(
-                    HomeDataTypeRoute("This is primitive type data")
-                )
-            }
-        ) { Text(text = "Navigate with data type args") }
 
-        Spacer(modifier = Modifier.size(24.dp))
-
-        Button(
-            onClick = {
-                navController.navigateTo(
-                    HomeDataClassRoute(
-                        CustomData(
-                            name = "Daffa",
-                            age = 24,
-                            desc = "Hello, I'm Daffa. I am 24 years old and this is a custom data class."
-                        )
-                    )
-                )
-            }
-        ) { Text(text = "Navigate with data class args") }
-
-        Spacer(modifier = Modifier.size(24.dp))
-
-        Button(
-            onClick = {
-                navController.navigateTo(HomeFetchApiRoute)
-            }
-        ) { Text(text = "Logout") }
     }
-
 }
 
 
@@ -83,7 +47,7 @@ internal fun HomeLandingScreen(
 @Composable
 private fun HomeLandingScreenPreview_Light() {
     SociotaskTheme {
-        val navController = rememberNavController()    // ✅ instance NavController
+        val navController = rememberNavController()
         HomeLandingScreen(navController)
     }
 }

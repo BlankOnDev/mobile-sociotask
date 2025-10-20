@@ -3,6 +3,8 @@ package com.blankon.sociotask.core.data.di
 import com.blankon.sociotask.core.data.auth.repository.AuthRepositoryImpl
 import com.blankon.sociotask.core.data.auth.source.AuthDataRemoteSource
 import com.blankon.sociotask.core.data.auth.source.AuthRemoteDataSourceImpl
+import com.blankon.sociotask.core.data.utils.ConnectivityManagerNetworkMonitor
+import com.blankon.sociotask.core.data.utils.NetworkMonitor
 import com.blankon.sociotask.core.domain.auth.repository.AuthRepository
 import dagger.Binds
 import dagger.Module
@@ -38,4 +40,9 @@ abstract class RepositoryModule {
 //    @Singleton
 //    abstract fun bindGoogleAuthDataSource(
 //    ): GoogleAuthDataSource
+
+    @Binds
+    internal abstract fun bindsNetworkMonitor(
+        networkMonitor: ConnectivityManagerNetworkMonitor
+    ): NetworkMonitor
 }

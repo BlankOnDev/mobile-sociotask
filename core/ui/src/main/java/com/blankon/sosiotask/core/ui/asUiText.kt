@@ -23,7 +23,7 @@ fun DataError.toUiText(): UiText = when (this) {
     is DataError.Network.Auth.EmailNotVerified -> StringResource(R.string.err_auth_email_not_verified)
     is DataError.Network.Auth.InvalidCredentials -> StringResource(R.string.err_auth_invalid_credential)
     is DataError.Network.Auth.Unauthorized -> StringResource(R.string.err_auth_unauthorized)
-    DataError.Network.Server_Error -> StringResource(R.string.err_auth_unauthorized)
+    DataError.Network.ServerError -> StringResource(R.string.err_auth_unauthorized)
 }
 
 fun SignInError.toUiText(): UiText = when (this) {
