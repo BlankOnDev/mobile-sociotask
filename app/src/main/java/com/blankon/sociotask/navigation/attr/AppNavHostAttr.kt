@@ -1,18 +1,19 @@
 package com.blankon.sociotask.navigation.attr
 
+import com.blankon.sociotask.core.designsystem.icon.SocioTaskIcon
 import com.blankon.sociotask.core.navigation.route.HomeGraph.HomeLandingRoute
 import com.blankon.sociotask.core.navigation.route.InfoGraph.InfoLandingRoute
-import com.blankon.sociotask.core.designsystem.icon.SocioTaskIcon
+import kotlin.reflect.KClass
 
 object AppNavHostAttr {
-    data class BottomNavItem<T : Any>(
-        val route: T,
+    data class BottomNavItem(
+        val route: KClass<*>,
         val icon: Int,
         val label: String
     )
 
     fun getBottomNav() = listOf(
-        BottomNavItem(route = HomeLandingRoute, icon = SocioTaskIcon.home, label = "Home"),
-        BottomNavItem(route = InfoLandingRoute, icon = SocioTaskIcon.info, label = "Info")
+        BottomNavItem(route = HomeLandingRoute::class, icon = SocioTaskIcon.home, label = "Home"),
+        BottomNavItem(route = InfoLandingRoute::class, icon = SocioTaskIcon.info, label = "Info")
     )
 }

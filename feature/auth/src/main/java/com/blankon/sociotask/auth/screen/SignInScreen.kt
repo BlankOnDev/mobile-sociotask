@@ -44,7 +44,7 @@ fun SignInScreen(
     viewModel: SignInViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostState() }
+//    val snackbarHostState = remember { SnackbarHostState() }
     val ctx = LocalContext.current
 //    LaunchedEffect(Unit) {
 //        viewModel.events.collect { e ->
@@ -70,8 +70,6 @@ fun SignInScreen(
         }
     }
 
-//    Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) }
-//    ) { paddingValues ->
     LoginContent(
         state = state,
         onEmailChange = { viewModel.onIntent(SignInIntent.EmailChanged(it)) },
@@ -80,7 +78,6 @@ fun SignInScreen(
         onSubmit = { viewModel.onIntent(SignInIntent.Submit) },
         modifier = modifier
     )
-//    }
 }
 
 

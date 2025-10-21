@@ -6,6 +6,7 @@ import com.blankon.sociotask.core.data.auth.source.AuthRemoteDataSourceImpl
 import com.blankon.sociotask.core.data.utils.ConnectivityManagerNetworkMonitor
 import com.blankon.sociotask.core.data.utils.NetworkMonitor
 import com.blankon.sociotask.core.domain.auth.repository.AuthRepository
+import com.blankon.sociotask.core.domain.auth.usecase.ObserveSessionStateUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -45,4 +46,6 @@ abstract class RepositoryModule {
     internal abstract fun bindsNetworkMonitor(
         networkMonitor: ConnectivityManagerNetworkMonitor
     ): NetworkMonitor
+
+
 }
