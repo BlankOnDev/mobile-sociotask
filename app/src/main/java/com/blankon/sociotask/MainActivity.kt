@@ -27,47 +27,39 @@ import com.blankon.sosiotask.core.ui.SnackbarController
 import com.blankon.sosiotask.core.ui.activity.LocalAppSnackbarHostState
 import com.blankon.sosiotask.core.ui.activity.ProvideLocalActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.reflect.KClass
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @Inject
-    lateinit var navGraphs: Set<@JvmSuppressWildcards BaseNavGraph>
+    @Inject lateinit var navGraphs: Set<@JvmSuppressWildcards BaseNavGraph>
 
-    @Inject
-    lateinit var networkMonitor: NetworkMonitor
+    @Inject lateinit var networkMonitor: NetworkMonitor
 
     private val viewModel: MainActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val splashScreen = installSplashScreen()
-        splashScreen.setKeepOnScreenCondition {
-            viewModel.session is SessionState.Loading
-        }
+        splashScreen.setKeepOnScreenCondition { viewModel.session.value is SessionState.Loading }
 
         enableEdgeToEdge()
 
         setContent {
             SociotaskTheme {
-                val snackbarHostState = remember {
-                    SnackbarHostState()
-                }
+                val snackbarHostState = remember { SnackbarHostState() }
                 val scope = rememberCoroutineScope()
 
-                ObserveAsEvents(
-                    flow = SnackbarController.events,
-                    snackbarHostState
-                ) { event ->
+                ObserveAsEvents(flow = SnackbarController.events, snackbarHostState) { event ->
                     scope.launch {
                         snackbarHostState.currentSnackbarData?.dismiss()
-                        val result = snackbarHostState.showSnackbar(
-                            message = event.message,
-                            actionLabel = event.action?.name,
-                            duration = event.duration
-                        )
+                        val result =
+                                snackbarHostState.showSnackbar(
+                                        message = event.message,
+                                        actionLabel = event.action?.name,
+                                        duration = event.duration
+                                )
                         if (result == SnackbarResult.ActionPerformed) {
                             event.action?.action?.invoke()
                         }
@@ -80,8 +72,8 @@ class MainActivity : ComponentActivity() {
                             snackbarHostState.currentSnackbarData?.dismiss()
                         } else {
                             snackbarHostState.showSnackbar(
-                                message = "Tidak ada koneksi internet",
-                                actionLabel = "Retry"
+                                    message = "Tidak ada koneksi internet",
+                                    actionLabel = "Retry"
                             )
                         }
                     }
@@ -89,29 +81,27 @@ class MainActivity : ComponentActivity() {
 
                 val session = viewModel.session.collectAsStateWithLifecycle()
 
-                val start: KClass<*> = when (session.value) {
-                    is SessionState.Authenticated -> {
-                        HomeGraph.HomeLandingRoute::class
-                    }
-
-                    SessionState.Unauthenticated -> {
-                        AuthGraph.SignInRoute::class
-                    }
-
-                    SessionState.Loading -> {
-                        AuthGraph.SignInRoute::class
-                    }
-                }
+                val start: KClass<*> =
+                        when (session.value) {
+                            is SessionState.Authenticated -> {
+                                HomeGraph.HomeLandingRoute::class
+                            }
+                            SessionState.Unauthenticated -> {
+                                AuthGraph.SignInRoute::class
+                            }
+                            SessionState.Loading -> {
+                                AuthGraph.SignInRoute::class
+                            }
+                        }
 
                 CompositionLocalProvider(LocalAppSnackbarHostState provides snackbarHostState) {
-                    Scaffold(
-                        snackbarHost = { SnackbarHost(LocalAppSnackbarHostState.current) }
-                    ) { paddingValues ->
+                    Scaffold(snackbarHost = { SnackbarHost(LocalAppSnackbarHostState.current) }) {
+                            paddingValues ->
                         ProvideLocalActivity(this) {
                             AppNavHost(
-                                navGraphs = navGraphs,
-                                contentPadding = paddingValues,
-                                startDestination = start
+                                    navGraphs = navGraphs,
+                                    contentPadding = paddingValues,
+                                    startDestination = start
                             )
                         }
                     }

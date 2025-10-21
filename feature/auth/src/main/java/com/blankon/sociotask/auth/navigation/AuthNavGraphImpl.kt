@@ -11,7 +11,7 @@ import com.blankon.sociotask.core.navigation.route.AuthGraph.SignUpRoute
 import com.blankon.sociotask.core.navigation.route.HomeGraph
 import javax.inject.Inject
 
-class SignInNavGraphImpl @Inject constructor() : BaseNavGraph {
+class AuthNavGraphImpl @Inject constructor() : BaseNavGraph {
     override fun NavGraphBuilder.createGraph(navController: NavController) {
         composableScreen<SignInRoute> {
             SignInScreen(

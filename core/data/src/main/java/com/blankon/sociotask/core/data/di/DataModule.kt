@@ -11,6 +11,7 @@ import com.blankon.sociotask.core.data.source.remote.ApiService
 import com.blankon.sociotask.core.data.source.remote.AuthInterceptor
 import com.blankon.sociotask.core.data.source.remote.TokenProvider
 import com.blankon.sociotask.core.data.source.remote.TokenProviderImpl
+import com.blankon.sociotask.core.domain.AppClock
 import com.blankon.sociotask.core.domain.auth.repository.SessionRepository
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
@@ -25,6 +26,7 @@ import okhttp3.logging.HttpLoggingInterceptor.Level.BODY
 import okhttp3.logging.HttpLoggingInterceptor.Level.NONE
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.time.Clock
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -89,4 +91,10 @@ class DataModule {
     @Singleton
     fun provideDataStore(@ApplicationContext context: Context) = AppDataStore(context)
 
+    @Provides
+    @Singleton
+    @AppClock
+    fun provideAppClock(): Clock {
+        return Clock.systemDefaultZone()
+    }
 }
