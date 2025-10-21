@@ -9,4 +9,5 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.room.db) apply false
     alias(libs.plugins.jetbrains.kotlin.jvm) apply false
+    alias(libs.plugins.secret.gradle.plugin) apply false
 }

@@ -3,7 +3,6 @@
 include(":core:domain")
 
 
-
 rootProject.name = "SocioTask"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 

@@ -1,6 +1,6 @@
 package com.blankon.sociotask.auth.di
 
-import com.blankon.sociotask.auth.navigation.SignInNavGraphImpl
+import com.blankon.sociotask.auth.navigation.AuthNavGraphImpl
 import com.blankon.sociotask.core.navigation.base.BaseNavGraph
 import dagger.Binds
 import dagger.Module
@@ -14,5 +14,5 @@ import dagger.multibindings.IntoSet
 abstract class AuthNavModule {
     @Binds
     @IntoSet
-    abstract fun bindAuthNavGraph(navGraph: SignInNavGraphImpl): BaseNavGraph
+    abstract fun bindAuthNavGraph(navGraph: AuthNavGraphImpl): BaseNavGraph
 }

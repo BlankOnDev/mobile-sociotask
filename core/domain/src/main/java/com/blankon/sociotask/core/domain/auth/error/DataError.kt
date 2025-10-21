@@ -7,6 +7,7 @@ sealed interface DataError : DomainError {
         data object NoInternet : Network
         data object Timeout : Network
         data object TooManyRequests : Network
+        data object ServerError : Network
         data class Http(
             val code: Int,
             val message: String? = null,

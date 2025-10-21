@@ -1,9 +1,11 @@
 package com.blankon.sociotask.core.data.auth.repository
 
 import com.blankon.sociotask.core.data.auth.source.AuthDataRemoteSource
+import com.blankon.sociotask.core.data.model.request.SignUpRequest
 import com.blankon.sociotask.core.domain.Result
 import com.blankon.sociotask.core.domain.auth.error.DataError
 import com.blankon.sociotask.core.domain.auth.error.SocialAuthDomainError
+import com.blankon.sociotask.core.domain.auth.model.RegisteredAccount
 import com.blankon.sociotask.core.domain.auth.model.SignInParams
 import com.blankon.sociotask.core.domain.auth.model.SignUpParams
 import com.blankon.sociotask.core.domain.auth.model.User
@@ -17,7 +19,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun signUpWithEmail(
         signUpParams: SignUpParams
-    ): Result<User, DataError> =
+    ): Result<RegisteredAccount, DataError> =
         remote.signUpWithEmail(signUpParams)
 
 

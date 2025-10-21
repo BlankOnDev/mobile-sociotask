@@ -2,8 +2,8 @@ package com.blankon.sociotask.core.domain.auth.usecase
 
 import com.blankon.sociotask.core.domain.Result
 import com.blankon.sociotask.core.domain.auth.error.SignUpError
+import com.blankon.sociotask.core.domain.auth.model.RegisteredAccount
 import com.blankon.sociotask.core.domain.auth.model.SignUpParams
-import com.blankon.sociotask.core.domain.auth.model.User
 import com.blankon.sociotask.core.domain.auth.repository.AuthRepository
 import javax.inject.Inject
 
@@ -12,7 +12,7 @@ class SignUpWithEmailUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         params: SignUpParams
-    ): Result<User, SignUpError> {
+    ): Result<RegisteredAccount, SignUpError> {
         if (params.username.isBlank()) return Result.Error(SignUpError.Validation.UsernameBlank)
         if (params.fullName.isBlank()) return Result.Error(SignUpError.Validation.FullNameBlank)
         if (params.email.isBlank()) return Result.Error(SignUpError.Validation.EmailBlank)

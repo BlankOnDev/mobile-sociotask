@@ -39,6 +39,7 @@ fun BrandIconButton(
     cornerRadius: Dp = 16.dp,
     elevation: Dp = 6.dp,
     width: Dp = 64.dp,
+    enabled: Boolean = true,
     height: Dp = 48.dp,
     border: BorderStroke? = BorderStroke(
         1.dp,
@@ -52,51 +53,59 @@ fun BrandIconButton(
             .size(width = width, height = height)
             .clip(shape)
             .clickable(
+                enabled = enabled,
                 role = Role.Button,
                 interactionSource = remember { MutableInteractionSource() },
-                indication = ripple(),
+                indication = if (enabled) ripple() else null,
                 onClick = onClick
             ),
         shape = shape,
         color = containerColor,
         tonalElevation = 0.dp,
-        shadowElevation = elevation,
-        border = border
+        shadowElevation = if (enabled) elevation else 0.dp,
+        border = if (enabled) border else border?.copy(
+            brush = border.brush,
+            width = border.width
+        )
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(contentPadding),
+                .padding(contentPadding)
+                .let { if (!enabled) it else it },
             contentAlignment = Alignment.Center
         ) {
             Image(
                 painter = painter,
                 contentDescription = contentDescription,
                 contentScale = ContentScale.Fit,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                alpha = if (enabled) 1f else 0.5f
             )
         }
-
     }
 }
 
 
 @Preview
 @Composable
-fun SocialButtonsRow() {
+fun SocialButtonsRow(
+    enabled: Boolean = true,
+    onGoogleClick: () -> Unit = {},
+    onTwitterClick: () -> Unit = {}
+) {
     Row(
         modifier = Modifier.padding(16.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Google (PNG/SVG/vector -> lebih aman pakai painterResource)
         BrandIconButton(
             painter = painterResource(id = R.drawable.logo_google),
             contentDescription = "Sign in with Google",
-            onClick = { /* TODO */ },
-            // Optional: mirip screenshot (sedikit lebih rounded & bayangan lembut)
+            onClick = onGoogleClick,
             cornerRadius = 18.dp,
             elevation = 8.dp,
+            enabled = enabled,
             width = 64.dp,
             height = 48.dp,
             contentPadding = 10.dp
@@ -106,8 +115,9 @@ fun SocialButtonsRow() {
         BrandIconButton(
             painter = painterResource(id = R.drawable.logo_twitter),
             contentDescription = "Continue with Twitter",
-            onClick = { /* TODO */ },
+            onClick = onTwitterClick,
             cornerRadius = 18.dp,
+            enabled = enabled,
             elevation = 8.dp,
             width = 64.dp,
             height = 48.dp,
