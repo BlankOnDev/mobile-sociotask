@@ -124,17 +124,24 @@ fun NavController.navigateTo(
     saveState: Boolean = true,
     launchSingleTop: Boolean = false,
     restoreState: Boolean = true,
-    popUpTo: KClass<*>? = null
+    popUpTo: KClass<out Any>? = null
 ) = navigate(route) {
-    popUpTo?.let {
-        popUpTo(it) {
-            this.inclusive = inclusive
-            this.saveState = saveState
-        }
+    if (route is KClass<*>) {
+        error("NavigateTo(route = KClass) terdeteksi. Kirim INSTANCE route(data object), bukan KClass")
     }
-    this.launchSingleTop = launchSingleTop
-    this.restoreState = restoreState
+
+    navigate(route) {
+        popUpTo?.let {
+            popUpTo(it) {
+                this.inclusive = inclusive
+                this.saveState = saveState
+            }
+        }
+        this.launchSingleTop = launchSingleTop
+        this.restoreState = restoreState
+    }
 }
+
 
 /**
  * Extension function to navigate to a specific route in the NavController and clear the back stack.

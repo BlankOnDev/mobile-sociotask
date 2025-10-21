@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.blankon.sociotask.core.domain.Result
 import com.blankon.sociotask.core.domain.auth.error.SignUpError
+import com.blankon.sociotask.core.domain.auth.model.RegisteredAccount
 import com.blankon.sociotask.core.domain.auth.model.SignUpParams
-import com.blankon.sociotask.core.domain.auth.model.User
 import com.blankon.sociotask.core.domain.auth.usecase.AuthenticateWithGoogleUseCase
 import com.blankon.sociotask.core.domain.auth.usecase.SignUpWithEmailUseCase
 import com.blankon.sociotask.feature.auth.R
@@ -65,7 +65,7 @@ sealed interface SignUpIntent {
 
 sealed interface SignUpEvent {
     data class ShowMessage(val message: UiText) : SignUpEvent
-    data class NavigateHome(val userId: String) : SignUpEvent
+    data object NavigateSignIn : SignUpEvent
 
 //    data object RequestGoogleSignIn : SignUpEvent
 //    data object RequestTwitterSignIn : SignUpEvent
@@ -143,7 +143,7 @@ class SignUpViewModel @Inject constructor(
                 )
             }
 
-            when (val res: Result<User, SignUpError> =
+            when (val res: Result<RegisteredAccount, SignUpError> =
                 signUpWithEmailUseCase(
                     params = SignUpParams(
                         email = state.email,
@@ -160,7 +160,7 @@ class SignUpViewModel @Inject constructor(
                 is Result.Success -> {
                     _uiState.update { it.copy(isLoading = false) }
                     _events.send(SignUpEvent.ShowMessage(UiText.StringResource(R.string.signup_success)))
-                    _events.send(SignUpEvent.NavigateHome(res.data.id))
+                    _events.send(SignUpEvent.NavigateSignIn)
                 }
             }
         }

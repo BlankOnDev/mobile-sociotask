@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.blankon.sociotask.auth.viewmodel.SignUpEvent
 import com.blankon.sociotask.auth.viewmodel.SignUpIntent
 import com.blankon.sociotask.auth.viewmodel.SignUpUiState
 import com.blankon.sociotask.auth.viewmodel.SignUpViewModel
@@ -27,17 +28,17 @@ import com.blankon.sociotask.core.designsystem.theme.SociotaskTheme
 
 @Composable
 fun SignUpScreen(
-    onNavigateLogin: (String) -> Unit,
+    onNavigateLogin: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
         viewModel.events.collect { e ->
-//            when (e) {
-//                is SignUpEvent.NavigateHome -> onNavigateLogin(e.userId)
-//                is SignUpEvent.ShowMessage -> {}
-//            }
+            when (e) {
+                is SignUpEvent.NavigateSignIn -> onNavigateLogin()
+                is SignUpEvent.ShowMessage -> {}
+            }
         }
     }
     SignUpContent(
@@ -46,6 +47,9 @@ fun SignUpScreen(
         onPasswordChange = { viewModel.onIntent(SignUpIntent.PasswordChanged(it)) },
         onSubmit = { viewModel.onIntent(SignUpIntent.Submit) },
         onTogglePassword = { viewModel.onIntent(SignUpIntent.TogglePassword) },
+        onFullNameChanged = { viewModel.onIntent(SignUpIntent.FullNameChanged(it)) },
+        onUsernameChanged = { viewModel.onIntent(SignUpIntent.UsernameChanged(it)) },
+        onConfirmPasswordChange = { viewModel.onIntent(SignUpIntent.ConfirmPasswordChanged(it)) },
         modifier = modifier
     )
 }
@@ -55,6 +59,9 @@ fun SignUpContent(
     state: SignUpUiState,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
+    onUsernameChanged: (String) -> Unit,
+    onFullNameChanged: (String) -> Unit,
+    onConfirmPasswordChange: (String) -> Unit,
     onSubmit: () -> Unit,
     onTogglePassword: () -> Unit,
     modifier: Modifier = Modifier,
@@ -69,30 +76,33 @@ fun SignUpContent(
         Text("SignUp")
         FullnameField(
             value = state.fullName,
-            onValueChange = {},
+            onValueChange = onFullNameChanged,
 
             )
         UsernameField(
             value = state.username,
-            onValueChange = {},
+            onValueChange = onUsernameChanged,
 
             )
-        EmailField(state.email, onValueChange = {})
+        EmailField(
+            state.email,
+            onValueChange = onEmailChange
+        )
         PasswordField(
             state.password,
-            onValueChange = {},
+            onValueChange = onPasswordChange,
             showPassword = state.showPassword,
             onTogglePassword = onTogglePassword
         )
         PasswordField(
             state.password,
-            onValueChange = {},
+            onValueChange = onConfirmPasswordChange,
             showPassword = state.showPassword,
             onTogglePassword = onTogglePassword
         )
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = {}
+            onClick = onSubmit
         ) {
             Text("Signup")
         }
@@ -112,7 +122,10 @@ private fun SignUpPrev() {
             onTogglePassword = {},
             onSubmit = {},
             onEmailChange = {},
-            onPasswordChange = {}
+            onPasswordChange = {},
+            onUsernameChanged = {},
+            onFullNameChanged = {},
+            onConfirmPasswordChange = {}
         )
     }
 }

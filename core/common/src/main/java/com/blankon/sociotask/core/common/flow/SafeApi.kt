@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
+
 inline fun <T, R> safeApiFlow(
     crossinline fetchApi: suspend () -> T,
     crossinline transformData: (T) -> R
@@ -21,3 +22,4 @@ inline fun <T, R> safeApiFlow(
         emit(ApiState.Error(e))
     }
 }.flowOn(Dispatchers.IO)
+

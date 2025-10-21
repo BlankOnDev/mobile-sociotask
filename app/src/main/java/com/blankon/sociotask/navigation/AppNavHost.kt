@@ -33,39 +33,44 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.blankon.sociotask.core.navigation.base.BaseNavGraph
 import com.blankon.sociotask.core.navigation.helper.navigateTo
-import com.blankon.sociotask.core.navigation.route.AuthGraph.SignInRoute
 import com.blankon.sociotask.core.navigation.route.HomeGraph.HomeLandingRoute
 import com.blankon.sociotask.navigation.attr.AppNavHostAttr
+import kotlin.reflect.KClass
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun AppNavHost(
     navGraphs: Set<@JvmSuppressWildcards BaseNavGraph>,
-    contentPadding: PaddingValues
+    contentPadding: PaddingValues,
+    startDestination: KClass<*>
 ) {
     val navController = rememberNavController()
+
     val navBackStackEntry = navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry.value?.destination
     val bottomNavItems = remember { AppNavHostAttr.getBottomNav() }
-    val showBottomNav = remember(currentDestination?.route) {
-        currentDestination?.route?.split('.')?.last().orEmpty() in bottomNavItems.map {
-            it.route.toString()
-        }
-    }
+
+    val showBottomNav =
+        currentDestination?.hierarchy?.any { dest ->
+            bottomNavItems.any { item -> dest.hasRoute(item.route::class) }
+        } == true
+
+    //    val showBottomNav = remember(currentDestination?.route) {
+    //        currentDestination?.route?.split('.')?.last().orEmpty() in bottomNavItems.map {
+    //            it.route.toString()
+    //        }
+    //    }
 
     Box(contentAlignment = BottomCenter) {
         NavHost(
-            modifier = Modifier
-                .background(colorScheme.background)
-                .fillMaxSize()
-                .padding(contentPadding),
+            modifier =
+                Modifier
+                    .background(colorScheme.background)
+                    .fillMaxSize()
+                    .padding(contentPadding),
             navController = navController,
-            startDestination = SignInRoute::class
-        ) {
-            navGraphs.forEach { graph ->
-                with(graph) { createGraph(navController) }
-            }
-        }
+            startDestination = startDestination
+        ) { navGraphs.forEach { graph -> with(graph) { createGraph(navController) } } }
 
         AnimatedVisibility(visible = showBottomNav, enter = fadeIn(), exit = fadeOut()) {
             CompositionLocalProvider(LocalRippleConfiguration provides null) {
@@ -75,23 +80,26 @@ internal fun AppNavHost(
                 ) {
                     bottomNavItems.map { item ->
                         NavigationBarItem(
-                            selected = currentDestination?.hierarchy?.any {
-                                it.hasRoute(item.route::class)
-                            } == true,
+                            selected =
+                                currentDestination?.hierarchy?.any {
+                                    it.hasRoute(item.route::class)
+                                } == true,
                             icon = {
                                 Icon(
                                     imageVector = ImageVector.vectorResource(item.icon),
-                                    contentDescription = item.route::class.simpleName.orEmpty()
+                                    contentDescription =
+                                        item.route::class.simpleName.orEmpty()
                                 )
                             },
                             label = { Text(item.label) },
-                            colors = NavigationBarItemDefaults.colors(
-                                selectedIconColor = colorScheme.primary,
-                                selectedTextColor = colorScheme.primary,
-                                unselectedIconColor = Gray,
-                                unselectedTextColor = Gray,
-                                indicatorColor = Transparent
-                            ),
+                            colors =
+                                NavigationBarItemDefaults.colors(
+                                    selectedIconColor = colorScheme.primary,
+                                    selectedTextColor = colorScheme.primary,
+                                    unselectedIconColor = Gray,
+                                    unselectedTextColor = Gray,
+                                    indicatorColor = Transparent
+                                ),
                             onClick = {
                                 navController.navigateTo(
                                     route = item.route,

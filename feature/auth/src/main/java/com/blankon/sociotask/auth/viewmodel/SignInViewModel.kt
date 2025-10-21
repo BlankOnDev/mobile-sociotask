@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.blankon.sociotask.core.domain.Result
 import com.blankon.sociotask.core.domain.auth.error.SignInError
 import com.blankon.sociotask.core.domain.auth.model.User
+import com.blankon.sociotask.core.domain.auth.repository.SessionRepository
 import com.blankon.sociotask.core.domain.auth.usecase.SignInWithEmailUseCase
 import com.blankon.sociotask.feature.auth.R
 import com.blankon.sosiotask.core.ui.UiText
@@ -12,9 +13,12 @@ import com.blankon.sosiotask.core.ui.toUiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -44,13 +48,23 @@ sealed interface SignInEvent {
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val signInWithEmailUseCase: SignInWithEmailUseCase
+    private val signInWithEmailUseCase: SignInWithEmailUseCase,
+    private val sessionRepository: SessionRepository
+
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SignInUiState())
     val uiState: StateFlow<SignInUiState> = _uiState.asStateFlow()
 
     private val _events = Channel<SignInEvent>(Channel.BUFFERED)
     val events = _events.receiveAsFlow()
+
+    val token : StateFlow<String?> = sessionRepository
+        .observeAccessToken()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = null
+        )
 
     fun onIntent(intent: SignInIntent) {
         when (intent) {

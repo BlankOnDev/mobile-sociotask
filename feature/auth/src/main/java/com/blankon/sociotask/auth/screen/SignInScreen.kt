@@ -11,12 +11,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -47,18 +44,18 @@ fun SignInScreen(
     viewModel: SignInViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostState() }
+//    val snackbarHostState = remember { SnackbarHostState() }
     val ctx = LocalContext.current
-    LaunchedEffect(Unit) {
-        viewModel.events.collect { e ->
-            when (e) {
-                is SignInEvent.NavigateHome -> onNavigateHome(e.userId)
-                is SignInEvent.ShowMessage -> snackbarHostState.showSnackbar(
-                    message = e.message.asString(ctx)
-                )
-            }
-        }
-    }
+//    LaunchedEffect(Unit) {
+//        viewModel.events.collect { e ->
+//            when (e) {
+//                is SignInEvent.NavigateHome -> onNavigateHome(e.userId)
+//                is SignInEvent.ShowMessage -> snackbarHostState.showSnackbar(
+//                    message = e.message.asString(ctx)
+//                )
+//            }
+//        }
+//    }
 
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
@@ -73,17 +70,14 @@ fun SignInScreen(
         }
     }
 
-    Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) }
-    ) { paddingValues ->
-        LoginContent(
-            state = state,
-            onEmailChange = { viewModel.onIntent(SignInIntent.EmailChanged(it)) },
-            onPasswordChange = { viewModel.onIntent(SignInIntent.PasswordChanged(it)) },
-            onTogglePassword = { viewModel.onIntent(SignInIntent.TogglePassword) },
-            onSubmit = { viewModel.onIntent(SignInIntent.Submit) },
-            modifier = modifier.padding(paddingValues)
-        )
-    }
+    LoginContent(
+        state = state,
+        onEmailChange = { viewModel.onIntent(SignInIntent.EmailChanged(it)) },
+        onPasswordChange = { viewModel.onIntent(SignInIntent.PasswordChanged(it)) },
+        onTogglePassword = { viewModel.onIntent(SignInIntent.TogglePassword) },
+        onSubmit = { viewModel.onIntent(SignInIntent.Submit) },
+        modifier = modifier
+    )
 }
 
 
@@ -189,7 +183,7 @@ private fun LoginContentPreview_Prefilled_Loading() {
                 email = "johndoe",
                 password = "secret123",
                 showPassword = false,
-                isLoading = true // <= Loading
+                isLoading = true
             ),
             onEmailChange = {},
             onPasswordChange = {},
