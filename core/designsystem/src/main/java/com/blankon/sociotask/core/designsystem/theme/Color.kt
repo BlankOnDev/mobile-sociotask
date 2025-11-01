@@ -13,3 +13,12 @@ val BackgroundDark = Color(0xFF1D1D1D)
 val BackgroundLight = Color(0xFFECECEC)
 val SurfaceLight = Color(0xFFF3F3F3)
 val SurfaceDark = Color(0xFF1A1A1A)
+
+
+val White = Color(0xFFFFFFFF)
+
+val Blue = Color(0xFF0515f2)
+
+val DarkBlue = Color(0xFF4251f5)
+
+val Black = Color(0xFF19191B)

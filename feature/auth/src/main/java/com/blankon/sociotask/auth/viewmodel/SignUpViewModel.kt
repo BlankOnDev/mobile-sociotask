@@ -9,8 +9,8 @@ import com.blankon.sociotask.core.domain.auth.model.SignUpParams
 import com.blankon.sociotask.core.domain.auth.usecase.AuthenticateWithGoogleUseCase
 import com.blankon.sociotask.core.domain.auth.usecase.SignUpWithEmailUseCase
 import com.blankon.sociotask.feature.auth.R
-import com.blankon.sosiotask.core.ui.UiText
-import com.blankon.sosiotask.core.ui.toUiText
+import com.blankon.sociotask.core.ui.UiText
+import com.blankon.sociotask.core.ui.toUiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow

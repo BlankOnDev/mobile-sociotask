@@ -1,25 +1,26 @@
 package com.blankon.sociotask.navigation.attr
 
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.blankon.sociotask.core.designsystem.icon.SocioTaskIcon
-import com.blankon.sociotask.core.navigation.route.HomeGraph.HomeLandingRoute
-import com.blankon.sociotask.core.navigation.route.InfoGraph.InfoLandingRoute
+import com.blankon.sociotask.feature.home.navigation.HomeRoute
+import com.blankon.sociotask.feature.info.navigation.InfoRoute
 
 object AppNavHostAttr {
     data class BottomNavItem(
         val route: Any,
-        val icon: Int,
+        val icon: ImageVector,
         val label: String
     )
 
     fun getBottomNav() =
         listOf(
             BottomNavItem(
-                route = HomeLandingRoute,
+                route = HomeRoute,
                 icon = SocioTaskIcon.home,
                 label = "Home"
             ),
             BottomNavItem(
-                route = InfoLandingRoute,
+                route = InfoRoute,
                 icon = SocioTaskIcon.info,
                 label = "Info"
             )

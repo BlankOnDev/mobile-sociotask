@@ -32,12 +32,14 @@ data class HomeUiState(
 
 sealed interface HomeEvent {
     data class ShowMessage(val message: String) : HomeEvent
+    data class NavigateDetail(val id : String) : HomeEvent
 }
 
 @HiltViewModel
 class HomeLandingViewModel @Inject constructor(
     private val getDashboard: GetDashboardUseCase,
-    private val createTask: CreateTaskUseCase
+    private val createTask: CreateTaskUseCase,
+
 ) : ViewModel() {
     private val _ui = MutableStateFlow(HomeUiState(isLoading = true))
     val ui: StateFlow<HomeUiState> = _ui.asStateFlow()

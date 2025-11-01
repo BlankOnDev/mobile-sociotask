@@ -11,11 +11,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -28,14 +27,14 @@ import com.blankon.sociotask.auth.viewmodel.SignInEvent
 import com.blankon.sociotask.auth.viewmodel.SignInIntent
 import com.blankon.sociotask.auth.viewmodel.SignInUiState
 import com.blankon.sociotask.auth.viewmodel.SignInViewModel
-import com.blankon.sociotask.core.designsystem.component.EmailField
 import com.blankon.sociotask.core.designsystem.component.HorizontalTextDivider
-import com.blankon.sociotask.core.designsystem.component.PasswordField
 import com.blankon.sociotask.core.designsystem.component.SocialButtonsRow
 import com.blankon.sociotask.core.designsystem.theme.SociotaskTheme
-import com.blankon.sosiotask.core.ui.ObserveAsEvents
-import com.blankon.sosiotask.core.ui.SnackbarController
-import com.blankon.sosiotask.core.ui.SnackbarEvent
+import com.blankon.sociotask.core.ui.EmailField
+import com.blankon.sociotask.core.ui.ObserveAsEvents
+import com.blankon.sociotask.core.ui.PasswordField
+import com.blankon.sociotask.core.ui.SnackbarController
+import com.blankon.sociotask.core.ui.SnackbarEvent
 
 @Composable
 fun SignInScreen(
@@ -44,24 +43,15 @@ fun SignInScreen(
     viewModel: SignInViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-//    val snackbarHostState = remember { SnackbarHostState() }
     val ctx = LocalContext.current
-//    LaunchedEffect(Unit) {
-//        viewModel.events.collect { e ->
-//            when (e) {
-//                is SignInEvent.NavigateHome -> onNavigateHome(e.userId)
-//                is SignInEvent.ShowMessage -> snackbarHostState.showSnackbar(
-//                    message = e.message.asString(ctx)
-//                )
-//            }
-//        }
-//    }
+    val scope = rememberCoroutineScope()
 
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
             is SignInEvent.ShowMessage -> {
                 val msg = event.message.asString(ctx)
-                SnackbarController.emit(
+                SnackbarController.send(
+                    scope,
                     SnackbarEvent(message = msg)
                 )
             }
@@ -148,7 +138,7 @@ fun LoginContent(
         )
         Row {
             Text("Don't have an account ?")
-            Text("Sign Up Here")
+            Text(text = "Sign Up Here")
         }
     }
 }

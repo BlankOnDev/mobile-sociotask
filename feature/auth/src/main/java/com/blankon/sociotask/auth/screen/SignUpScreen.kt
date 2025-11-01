@@ -20,10 +20,10 @@ import com.blankon.sociotask.auth.viewmodel.SignUpEvent
 import com.blankon.sociotask.auth.viewmodel.SignUpIntent
 import com.blankon.sociotask.auth.viewmodel.SignUpUiState
 import com.blankon.sociotask.auth.viewmodel.SignUpViewModel
-import com.blankon.sociotask.core.designsystem.component.EmailField
-import com.blankon.sociotask.core.designsystem.component.FullnameField
-import com.blankon.sociotask.core.designsystem.component.PasswordField
-import com.blankon.sociotask.core.designsystem.component.UsernameField
+import com.blankon.sociotask.core.ui.EmailField
+import com.blankon.sociotask.core.ui.FullnameField
+import com.blankon.sociotask.core.ui.PasswordField
+import com.blankon.sociotask.core.ui.UsernameField
 import com.blankon.sociotask.core.designsystem.theme.SociotaskTheme
 
 @Composable
