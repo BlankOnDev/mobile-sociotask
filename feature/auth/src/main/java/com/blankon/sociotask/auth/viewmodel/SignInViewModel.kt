@@ -8,14 +8,13 @@ import com.blankon.sociotask.core.domain.auth.model.User
 import com.blankon.sociotask.core.domain.auth.repository.SessionRepository
 import com.blankon.sociotask.core.domain.auth.usecase.SignInWithEmailUseCase
 import com.blankon.sociotask.feature.auth.R
-import com.blankon.sosiotask.core.ui.UiText
-import com.blankon.sosiotask.core.ui.toUiText
+import com.blankon.sociotask.core.ui.UiText
+import com.blankon.sociotask.core.ui.toUiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn

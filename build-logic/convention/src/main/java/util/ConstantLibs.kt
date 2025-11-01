@@ -4,7 +4,6 @@ object ConstantLibs {
     val coreModules = listOf(
         ":core:data",
         ":core:common",
-        ":core:navigation",
         ":core:designsystem",
         ":core:ui"
     )

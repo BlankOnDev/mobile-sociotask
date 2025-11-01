@@ -20,8 +20,8 @@ class FeatureModulePlugin : Plugin<Project> {
             }
 
             dependencies {
+                implementation(project(coreModules[2]))
                 implementation(project(coreModules[3]))
-                implementation(project(coreModules[4]))
                 coreModules.forEach { module ->
                     implementation(project(module))
                 }
