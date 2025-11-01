@@ -1,5 +1,6 @@
 package com.blankon.sociotask.core.data.dashboard.repository
 
+import androidx.compose.ui.graphics.Color
 import com.blankon.sociotask.core.domain.DomainError
 import com.blankon.sociotask.core.domain.Result
 import com.blankon.sociotask.core.domain.Result.Error
@@ -31,7 +32,8 @@ class FakeTaskRepository @Inject constructor() : TaskRepository {
                 reward = Reward(100),
                 paymentType = PaymentType.PointsOnly,
                 quota = 250,
-                deadline = LocalDate.now().plusDays(7)
+                deadline = LocalDate.now().plusDays(7),
+                platformTint = Color(0xFFD0BCFF)
             ),
             Task(
                 id = UUID.randomUUID().toString(),
@@ -42,7 +44,8 @@ class FakeTaskRepository @Inject constructor() : TaskRepository {
                 reward = Reward(100),
                 paymentType = PaymentType.PointsOnly,
                 quota = 150,
-                deadline = LocalDate.now().plusDays(5)
+                deadline = LocalDate.now().plusDays(5),
+                platformTint = Color(0xFFD0BCFF)
             ),
             Task(
                 id = UUID.randomUUID().toString(),
@@ -53,7 +56,8 @@ class FakeTaskRepository @Inject constructor() : TaskRepository {
                 reward = Reward(120),
                 paymentType = PaymentType.USDT,
                 quota = 100,
-                deadline = LocalDate.now().plusDays(3)
+                deadline = LocalDate.now().plusDays(3),
+                platformTint = Color(0xFFD0BCFF)
             )
         )
 
@@ -99,7 +103,7 @@ class FakeTaskRepository @Inject constructor() : TaskRepository {
             reward = Reward(draft.rewardAmount),
             paymentType = draft.paymentType,
             quota = draft.quota,
-            deadline = draft.deadline
+            deadline = draft.deadline,
         )
         tasks.update { listOf(created) + it }
         // Kurangi balance seolah dana di-hold
