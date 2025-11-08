@@ -1,7 +1,7 @@
 package com.blankon.sociotask.core.data.auth.repository
 
 import com.blankon.sociotask.core.data.source.local.AppDataStore
-import com.blankon.sociotask.core.domain.auth.repository.SessionRepository
+import com.blankon.sociotask.core.domain.repository.SessionRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

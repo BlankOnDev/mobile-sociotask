@@ -9,10 +9,9 @@ import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.blankon.sociotask.auth.navigation.AuthBaseRoute
-import com.blankon.sociotask.auth.navigation.AuthSignInRoute
 import com.blankon.sociotask.core.data.utils.NetworkMonitor
 import com.blankon.sociotask.core.designsystem.theme.SociotaskTheme
-import com.blankon.sociotask.core.domain.auth.usecase.SessionState
+import com.blankon.sociotask.auth.usecase.SessionState
 import com.blankon.sociotask.core.ui.activity.ProvideLocalActivity
 import com.blankon.sociotask.feature.home.navigation.HomeBaseRoute
 import com.blankon.sociotask.ui.SocioApp
@@ -39,14 +38,14 @@ class MainActivity : ComponentActivity() {
                 android.content.res.Configuration.UI_MODE_NIGHT_YES
 
         enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.auto(
-                lightScrim = android.graphics.Color.TRANSPARENT,
-                darkScrim = android.graphics.Color.TRANSPARENT,
-            ) { isDark },
-            navigationBarStyle = SystemBarStyle.auto(
-                lightScrim = lightScrim,
-                darkScrim = darkScrim,
-            ) { isDark },
+//            statusBarStyle = SystemBarStyle.auto(
+//                lightScrim = android.graphics.Color.TRANSPARENT,
+//                darkScrim = android.graphics.Color.TRANSPARENT,
+//            ) { isDark },
+//            navigationBarStyle = SystemBarStyle.auto(
+//                lightScrim = lightScrim,
+//                darkScrim = darkScrim,
+//            ) { isDark },
         )
 
         setContent {
@@ -75,8 +74,6 @@ class MainActivity : ComponentActivity() {
 
                     SessionState.Loading -> {}
                 }
-
-
             }
         }
     }

@@ -39,8 +39,6 @@ fun rememberSocioAppState(
             networkMonitor = networkMonitor
         )
     }
-
-
 }
 
 

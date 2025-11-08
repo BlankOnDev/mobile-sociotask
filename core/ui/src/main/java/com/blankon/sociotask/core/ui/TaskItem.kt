@@ -23,10 +23,10 @@ import androidx.compose.ui.unit.dp
 import com.blankon.sociotask.core.designsystem.component.SocioListCard
 import com.blankon.sociotask.core.designsystem.icon.SocioTaskIcon
 import com.blankon.sociotask.core.designsystem.theme.SociotaskTheme
-import com.blankon.sociotask.core.domain.dashboard.model.PaymentType
-import com.blankon.sociotask.core.domain.dashboard.model.Reward
-import com.blankon.sociotask.core.domain.dashboard.model.SocialPlatform
-import com.blankon.sociotask.core.domain.dashboard.model.Task
+import com.blankon.sociotask.core.domain.model.PaymentType
+import com.blankon.sociotask.core.domain.model.Reward
+import com.blankon.sociotask.core.domain.model.SocialPlatform
+import com.blankon.sociotask.core.domain.model.Task
 import java.time.LocalDate
 
 @Composable

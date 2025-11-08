@@ -4,11 +4,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
-import com.blankon.sociotask.auth.navigation.AuthSignInRoute
 import com.blankon.sociotask.auth.navigation.authGraph
 import com.blankon.sociotask.auth.navigation.navigateToSignIn
 import com.blankon.sociotask.auth.navigation.navigateToSignUp
 import com.blankon.sociotask.feature.home.navigation.homeScreen
+import com.blankon.sociotask.feature.home.navigation.navigateToDetail
 import com.blankon.sociotask.feature.home.navigation.navigateToHome
 import com.blankon.sociotask.feature.info.navigation.infoScreen
 import com.blankon.sociotask.ui.SocioAppState
@@ -34,7 +34,7 @@ internal fun AppNavHost(
         )
 
         homeScreen(
-            onDetailClick = {}
+            onDetailClick = { navController.navigateToDetail() }
         )
         infoScreen()
     }

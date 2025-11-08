@@ -2,11 +2,11 @@ package com.blankon.sociotask.auth.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.blankon.sociotask.core.domain.Result
-import com.blankon.sociotask.core.domain.auth.error.SignInError
-import com.blankon.sociotask.core.domain.auth.model.User
-import com.blankon.sociotask.core.domain.auth.repository.SessionRepository
-import com.blankon.sociotask.core.domain.auth.usecase.SignInWithEmailUseCase
+import com.blankon.sociotask.core.domain.utils.Result
+import com.blankon.sociotask.core.domain.error.SignInError
+import com.blankon.sociotask.core.domain.model.User
+import com.blankon.sociotask.core.domain.repository.SessionRepository
+import com.blankon.sociotask.auth.usecase.SignInWithEmailUseCase
 import com.blankon.sociotask.feature.auth.R
 import com.blankon.sociotask.core.ui.UiText
 import com.blankon.sociotask.core.ui.toUiText

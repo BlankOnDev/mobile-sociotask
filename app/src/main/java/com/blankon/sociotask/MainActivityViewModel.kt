@@ -2,8 +2,8 @@ package com.blankon.sociotask
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.blankon.sociotask.core.domain.auth.usecase.ObserveSessionStateUseCase
-import com.blankon.sociotask.core.domain.auth.usecase.SessionState
+import com.blankon.sociotask.auth.usecase.ObserveSessionStateUseCase
+import com.blankon.sociotask.auth.usecase.SessionState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

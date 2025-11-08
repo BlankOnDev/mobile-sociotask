@@ -1,8 +1,8 @@
 package com.blankon.sociotask.core.data.utils
 
 import com.blankon.sociotask.core.data.model.response.ApiResponse
-import com.blankon.sociotask.core.domain.Result
-import com.blankon.sociotask.core.domain.auth.error.DataError
+import com.blankon.sociotask.core.domain.utils.Result
+import com.blankon.sociotask.core.domain.error.DataError
 import retrofit2.Response
 import java.io.IOException
 import java.net.SocketTimeoutException

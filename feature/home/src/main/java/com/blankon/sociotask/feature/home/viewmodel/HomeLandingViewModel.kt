@@ -2,11 +2,10 @@ package com.blankon.sociotask.feature.home.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.blankon.sociotask.core.domain.dashboard.model.Balance
-import com.blankon.sociotask.core.domain.dashboard.model.Task
-import com.blankon.sociotask.core.domain.dashboard.model.TaskDraft
-import com.blankon.sociotask.core.domain.dashboard.usecase.CreateTaskUseCase
-import com.blankon.sociotask.core.domain.dashboard.usecase.GetDashboardUseCase
+import com.blankon.sociotask.core.domain.model.Balance
+import com.blankon.sociotask.core.domain.model.Task
+import com.blankon.sociotask.core.domain.model.TaskDraft
+import com.blankon.sociotask.feature.home.usecase.GetDashboardUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,15 +31,13 @@ data class HomeUiState(
 
 sealed interface HomeEvent {
     data class ShowMessage(val message: String) : HomeEvent
-    data class NavigateDetail(val id : String) : HomeEvent
+    data class NavigateDetail(val id: String) : HomeEvent
 }
 
 @HiltViewModel
 class HomeLandingViewModel @Inject constructor(
     private val getDashboard: GetDashboardUseCase,
-    private val createTask: CreateTaskUseCase,
-
-) : ViewModel() {
+    ) : ViewModel() {
     private val _ui = MutableStateFlow(HomeUiState(isLoading = true))
     val ui: StateFlow<HomeUiState> = _ui.asStateFlow()
 

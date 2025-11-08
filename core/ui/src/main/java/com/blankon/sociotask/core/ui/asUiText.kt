@@ -1,8 +1,8 @@
 package com.blankon.sociotask.core.ui
 
-import com.blankon.sociotask.core.domain.auth.error.DataError
-import com.blankon.sociotask.core.domain.auth.error.SignInError
-import com.blankon.sociotask.core.domain.auth.error.SignUpError
+import com.blankon.sociotask.core.domain.error.DataError
+import com.blankon.sociotask.core.domain.error.SignInError
+import com.blankon.sociotask.core.domain.error.SignUpError
 import com.blankon.sociotask.core.ui.UiText.StringResource
 
 fun DataError.toUiText(): UiText = when (this) {

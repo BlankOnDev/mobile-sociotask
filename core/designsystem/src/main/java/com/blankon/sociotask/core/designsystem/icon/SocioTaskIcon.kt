@@ -1,5 +1,6 @@
 package com.blankon.sociotask.core.designsystem.icon
 
+import androidx.annotation.DrawableRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
@@ -10,7 +11,9 @@ import com.blankon.sociotask.core.designsystem.R
 
 object SocioTaskIcon {
 
+
     val Add = Icons.Rounded.Add
+    val upload = R.drawable.ic_uploads
 
 
     val back = R.drawable.ic_back

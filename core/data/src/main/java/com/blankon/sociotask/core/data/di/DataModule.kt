@@ -11,8 +11,8 @@ import com.blankon.sociotask.core.data.source.remote.ApiService
 import com.blankon.sociotask.core.data.source.remote.AuthInterceptor
 import com.blankon.sociotask.core.data.source.remote.TokenProvider
 import com.blankon.sociotask.core.data.source.remote.TokenProviderImpl
-import com.blankon.sociotask.core.domain.AppClock
-import com.blankon.sociotask.core.domain.auth.repository.SessionRepository
+import com.blankon.sociotask.core.domain.utils.AppClock
+import com.blankon.sociotask.core.domain.repository.SessionRepository
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import dagger.Module
