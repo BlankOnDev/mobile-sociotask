@@ -16,7 +16,6 @@ class FeatureModulePlugin : Plugin<Project> {
                 alias(libs.plugins.convention.compose.library)
                 alias(libs.plugins.convention.navigation)
                 alias(libs.plugins.convention.hilt)
-
             }
 
             dependencies {
